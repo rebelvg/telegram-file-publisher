@@ -2,10 +2,9 @@ import { Telegraf } from 'telegraf';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { script } from './config';
+import { TELEGRAM_API_KEY, TELEGRAM_CHAT_ID, SLEEP_MINUTES } from './config';
 
-const bot = new Telegraf(script.telegramApiKey);
-const chatId = script.telegramChatId;
+const bot = new Telegraf(TELEGRAM_API_KEY);
 const baseFolder = __dirname;
 const filesToPublish = path.join(baseFolder, 'files');
 const filesPublished = path.join(baseFolder, 'published');
@@ -27,10 +26,6 @@ process.on('unhandledRejection', (error) => {
 });
 
 (async () => {
-  bot.on('channel_chat_created', (data) => {
-    console.log('channel_chat_created', data.chat.id);
-  });
-
   bot.launch();
 })();
 
@@ -54,7 +49,7 @@ process.on('unhandledRejection', (error) => {
       const tags = tagsString.split(',').map((s) => s.trim());
 
       await bot.telegram.sendDocument(
-        chatId,
+        TELEGRAM_CHAT_ID,
         {
           source: fs.readFileSync(path.join(filesToPublish, file.name)),
           filename: fileName,
@@ -73,6 +68,6 @@ process.on('unhandledRejection', (error) => {
 
     console.log('waiting_next_file');
 
-    await sleep(script.sleepMinutes * 60);
+    await sleep(SLEEP_MINUTES * 60);
   }
 })();
