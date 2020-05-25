@@ -38,7 +38,7 @@ process.on('unhandledRejection', (error) => {
     if (file) {
       const { name } = path.parse(file.name);
 
-      const regExpRes = new RegExp(/(\S+) \[(.+)\]/).exec(name);
+      const regExpRes = new RegExp(/(.+?) \[(.+)\]/).exec(name);
 
       if (!regExpRes) {
         throw new Error('bad_filename');
