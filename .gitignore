@@ -2,3 +2,4 @@ node_modules/
 files/
 published/
 config.ts
+store-data.json

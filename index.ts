@@ -2,12 +2,28 @@ import { Telegraf } from 'telegraf';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { TELEGRAM_API_KEY, TELEGRAM_CHAT_ID, SLEEP_MINUTES } from './config';
+import { TELEGRAM_API_KEY, TELEGRAM_CHAT_ID, SLEEP_MINUTES, CHAT_SECRET } from './config';
+import { STORE } from './store';
 
 const bot = new Telegraf(TELEGRAM_API_KEY);
 const baseFolder = __dirname;
 const filesToPublish = path.join(baseFolder, 'files');
 const filesPublished = path.join(baseFolder, 'published');
+
+bot.command('login', (ctx) => {
+  const [, token] = ctx.message.text.split(' ');
+
+  if (token === CHAT_SECRET) {
+    STORE.loggedInUsers.push(ctx.message.from.id);
+  }
+});
+
+bot.on('message', (ctx) => {
+  if (!STORE.loggedInUsers.includes(ctx.message.from.id)) {
+  }
+
+  console.log('data', ctx);
+});
 
 if (!fs.existsSync(filesToPublish)) {
   fs.mkdirSync(filesToPublish);
