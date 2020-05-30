@@ -6,9 +6,8 @@ import { TELEGRAM_API_KEY, TELEGRAM_CHAT_ID, SLEEP_MINUTES, CHAT_SECRET } from '
 import { STORE } from './store';
 
 const bot = new Telegraf(TELEGRAM_API_KEY);
-const baseFolder = __dirname;
-const filesToPublish = path.join(baseFolder, 'files');
-const filesPublished = path.join(baseFolder, 'published');
+const filesToPublish = path.join(__dirname, 'files');
+const filesPublished = path.join(__dirname, 'published');
 
 bot.command('login', (ctx) => {
   const [, token] = ctx.message.text.split(' ');
